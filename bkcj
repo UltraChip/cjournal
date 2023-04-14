@@ -1,0 +1,25 @@
+#!/bin/bash
+
+## CHIP'S JOURNAL DATABASE BACKUP SCRIPT
+##
+## A simple bash script to help backup CJournal's database. Pretty
+## straightforward.
+
+
+# CONSTANTS
+CJOURNAL_PATH="$HOME/.local/bin/cjournal"
+CJOURNAL_DB="journal.db"
+BACKUP_LOCATIONS=(
+    "$HOME/backups/cjournal"
+    # Other backup locations can go here, including network locations
+    # user@examplehost:/path/to/backup/location
+)
+
+
+# MAIN
+BK_FILE="$(date +%Y%m%d)-$(date +%H%M)_CJournal_Backup.db"
+
+for loc in "${BACKUP_LOCATIONS[@]}"; do
+    echo "Backing up to $loc..."
+    rsync -avh "$CJOURNAL_PATH/$CJOURNAL_DB" "$loc/$BK_FILE"
+done
